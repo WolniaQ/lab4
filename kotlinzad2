@@ -1,0 +1,75 @@
+package com.example.lab4
+
+import android.os.Bundle
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import com.example.lab4.databinding.ActivityMainBinding
+import kotlin.random.Random
+
+class MainActivity : AppCompatActivity() {
+
+
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
+
+        setContentView(binding.root)
+
+
+        binding.button.setOnClickListener {
+
+            Toast.makeText(this, getString(R.string.rzut_moneta_toast), Toast.LENGTH_SHORT).show()
+            binding.textView.text = getString(R.string.trwa_losowanie)
+            binding.button.isEnabled = false
+
+            val leftResult = Random.nextInt(2)
+            val rightResult = Random.nextInt(2)
+
+            val leftDrawable = if (leftResult == 0) R.drawable.front_coin else R.drawable.rear_coin
+            val rightDrawable = if (rightResult == 0) R.drawable.front_coin else R.drawable.rear_coin
+
+            fun animateCoin(coin: ImageView, drawable: Int, onComplete: () -> Unit = {}) {
+                coin.animate()
+                    .rotationYBy(1800f)
+                    .translationY(-200f)
+                    .scaleX(0.7f)
+                    .scaleY(0.7f)
+                    .setDuration(600)
+                    .withEndAction {
+
+                        coin.setImageResource(drawable)
+
+                        coin.animate()
+                            .translationY(0f)
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .rotationYBy(1800f)
+                            .setDuration(600)
+                            .withEndAction {
+                                onComplete()
+                            }
+                            .start()
+                    }
+                    .start()
+            }
+
+            animateCoin(binding.coinLeft, leftDrawable)
+            animateCoin(binding.coinRight, rightDrawable) {
+
+                val lewyWynik = if (leftResult == 0) getString(R.string.orzel) else getString(R.string.reszka)
+                val prawyWynik = if (rightResult == 0) getString(R.string.orzel) else getString(R.string.reszka)
+
+                binding.textView.text = getString(R.string.wynik_graczy, lewyWynik, prawyWynik)
+                binding.button.isEnabled = true
+            }
+        }
+    }
+}
