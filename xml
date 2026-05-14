@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btnLosuj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wybierz_czynnosc_btn" />
+
+    <TextView
+        android:id="@+id/tvWynik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:text="@string/kliknij_aby_wylosowac" />
+
+    <ImageView
+        android:id="@+id/ivObrazek"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/opis_obrazka" />
+
+</LinearLayout>
