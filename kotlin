@@ -1,0 +1,84 @@
+package com.example.lab4_1
+
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    private var wybranaCzynnosc: String = ""
+    private var idObrazka: Int = 0
+
+    private val kluczTekstu = "CZYNNOSC"
+    private val kluczObrazka = "OBRAZEK"
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val btnLosuj = findViewById<Button>(R.id.btnLosuj)
+        val tvWynik = findViewById<TextView>(R.id.tvWynik)
+        val ivObrazek = findViewById<ImageView>(R.id.ivObrazek)
+
+
+        if (savedInstanceState != null) {
+            wybranaCzynnosc = savedInstanceState.getString(kluczTekstu, "")
+            idObrazka = savedInstanceState.getInt(kluczObrazka, 0)
+
+            if (wybranaCzynnosc.isNotEmpty()) {
+                tvWynik.text = wybranaCzynnosc
+            }
+            if (idObrazka != 0) {
+                ivObrazek.setImageResource(idObrazka)
+            }
+        }
+
+
+        btnLosuj.setOnClickListener {
+            Toast.makeText(this, "Trwa losowanie...", Toast.LENGTH_SHORT).show()
+
+
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                val los = (1..4).random()
+
+
+                when (los) {
+                    1 -> {
+                        wybranaCzynnosc = "Wybrałeś piwko!"
+                        idObrazka = R.drawable.piwo
+                    }
+                    2 -> {
+                        wybranaCzynnosc = "Wybrałeś oglądanie Netflixa!"
+                        idObrazka = R.drawable.netflix
+                    }
+                    3 -> {
+                        wybranaCzynnosc = "Wybrałeś czytanie książki!"
+                        idObrazka = R.drawable.ksiazka
+                    }
+                    4 -> {
+                        wybranaCzynnosc = "Wybrałeś spacer!"
+                        idObrazka = R.drawable.spacer
+                    }
+                }
+
+
+                tvWynik.text = wybranaCzynnosc
+                ivObrazek.setImageResource(idObrazka)
+
+            }, 2000)
+        }
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(kluczTekstu, wybranaCzynnosc)
+        outState.putInt(kluczObrazka, idObrazka)
+    }
+}
